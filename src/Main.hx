@@ -11,5 +11,6 @@ class Main extends Sprite
 		super();
 
 		var flixel:FlxGame = new FlxGame(1280, 720, MainState);
+		addChild(flixel);
 	}
 }
