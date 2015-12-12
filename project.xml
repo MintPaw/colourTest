@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="ColourTest" package="com.sample.colourtest" version="1.0.0" company="Company Name" />
+	<app main="Main" path="bin" file="ColourTest" />
+	<window width="1280" height="720"/>
+	
+	<source path="src" />
+	
+	<haxelib name="openfl" />
+	<haxelib name="flixel" />
+	<haxelib name="flixel-addons" />
+	
+	<assets path="assets" />
+	
+</project>
