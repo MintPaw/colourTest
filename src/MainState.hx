@@ -4,6 +4,7 @@ import flixel.FlxState;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.loaders.TexturePackerData;
+import flixel.util.FlxColorUtil;
 import openfl.geom.ColorTransform;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
@@ -17,7 +18,7 @@ class MainState extends FlxState
 	private var _oldData:BitmapData;
 	private var _frameCount:Int = 0;
 	private var _matrix:Array<Float>;
-	
+
 	public function new()
 	{
 		super();
@@ -45,50 +46,84 @@ class MainState extends FlxState
 	override public function update()
 	{
 		_frameCount++;
+		var useMatrix:Bool = false;
 
-		// Generate the effects depending on frame, a new effect every 100
-		if (_frameCount / 100 == 1)
+		if (useMatrix)
 		{
-			// Take away half the blue
-			applyEffect([
-					1, 0, 0, 0, 0,
-					0, 1, 0, 0, 0,
-					0, 0, 0.5, 0, 0,
-					0, 0, 0, 1, 0
-			]);
+			// Generate the effects depending on frame, a new effect every 100
+			if (_frameCount / 100 == 1)
+			{
+				// Take away half the blue
+				applyEffect([
+						1, 0, 0, 0, 0,
+						0, 1, 0, 0, 0,
+						0, 0, 0.5, 0, 0,
+						0, 0, 0, 1, 0
+				]);
+			}
+			else if (_frameCount / 100 == 2)
+			{
+				// Normalize, e.g. Greyscale
+				applyEffect([
+						0.5, 0.5, 0.5, 0, 0,
+						0.5, 0.5, 0.5, 0, 0,
+						0.5, 0.5, 0.5, 0, 0,
+						0.5, 0.5, 0.5, 1, 0
+				]);
+			}
+			else if (_frameCount / 100 == 3)
+			{
+				// Invert
+				applyEffect([
+						-1, 0, 0, 0, 255,
+						0, -1, 0, 0, 255,
+						0, 0, -1, 0, 255,
+						0, 0, 0, 1, 0
+				]);
+			}
+			else if (_frameCount / 100 == 4)
+			{
+				// Reset to identity
+				applyEffect([
+						1, 0, 0, 0, 0,
+						0, 1, 0, 0, 0,
+						0, 0, 1, 0, 0,
+						0, 0, 0, 1, 0
+				]);
+			}
 		}
-		else if (_frameCount / 100 == 2)
+		else
 		{
-			// Normalize, e.g. Greyscale
-			applyEffect([
-					0.5, 0.5, 0.5, 0, 0,
-					0.5, 0.5, 0.5, 0, 0,
-					0.5, 0.5, 0.5, 0, 0,
-					0.5, 0.5, 0.5, 1, 0
-			]);
-		}
-		else if (_frameCount / 100 == 3)
-		{
-			// Invert
-			applyEffect([
-					-1, 0, 0, 0, 255,
-					0, -1, 0, 0, 255,
-					0, 0, -1, 0, 255,
-					0, 0, 0, 1, 0
-			]);
-		}
-		else if (_frameCount / 100 == 4)
-		{
-			// Reset to identity
-			applyEffect([
-					1, 0, 0, 0, 0,
-					0, 1, 0, 0, 0,
-					0, 0, 1, 0, 0,
-					0, 0, 0, 1, 0
-			]);
+			// Swap the blue and red channel
+			if (_frameCount / 100 == 1)
+			{
+				// Make my red green and blue arrays
+				var reds:Array<Int> = [];
+				var greens:Array<Int> = [];
+				var blues:Array<Int> = [];
+				
+				// Start assigning colours
+				for (i in 0...255)
+				{
+					// Notice that I've assigned all the reds to actually be blues
+					reds.push(FlxColorUtil.getColor24(0, 0, i));
+					// Greens are unchanged
+					greens.push(FlxColorUtil.getColor24(0, i, 0));
+					// All these blues are actually reds
+					blues.push(FlxColorUtil.getColor24(i, 0, 0));
+				}
 
-			// Repeat
-			_frameCount = 0;
+				_anim.pixels.paletteMap(
+						_anim.pixels,
+						_anim.pixels.rect,
+						new Point(0, 0),
+						reds,
+						greens,
+						blues,
+						// This would be alpha if you wanted to change the alpha channel for
+						// whatever reason
+						null);
+			}
 		}
 
 		super.update();
