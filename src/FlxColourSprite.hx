@@ -63,6 +63,7 @@ class FlxColourSprite extends FlxSprite
 			lumB+cosVal*(1-lumB)+sinVal*(lumB),0,0,0,0,0,1,0,0,0,0,0,1];
 
 		var r:Array<Float> = mult(m, lumArray, 5);
+		for (i in 0...5) r.pop();
 
 		pixels.applyFilter(
 				pixels,
@@ -84,10 +85,5 @@ class FlxColourSprite extends FlxSprite
 		}
 
 		return r;
-	}
-
-	private function index2d(a:Array<Float>, x:Float, y:Float, width:Int):Float
-	{
-		return a[Std.int(y*width+x)];
 	}
 }
