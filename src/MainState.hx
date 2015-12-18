@@ -10,11 +10,11 @@ import openfl.geom.Matrix;
 import openfl.geom.Point;
 import openfl.display.BlendMode;
 import openfl.display.BitmapData;
-import openfl.filters.ColorMatrixFilter;
 
 class MainState extends FlxState
 {
 	private var _anim:FlxColourSprite = new FlxColourSprite();
+	private var _frameCount:Int = 0;
 
 	public function new()
 	{
@@ -32,10 +32,31 @@ class MainState extends FlxState
 		_anim.scale.x *= 2;
 		_anim.scale.y *= 2;
 		add(_anim);
+
+		_anim.cachePixels();
+
 	}
 
 	override public function update()
 	{
+		_frameCount++;
+
+		// Default
+		if (_frameCount == 100) _anim.adjustColor(0, 1, 1, 0, true)
+		// Brightness
+		else if (_frameCount == 200) _anim.adjustColor(0.5, 1, 1, 0, true)
+		// Contrast
+		else if (_frameCount == 300) _anim.adjustColor(0, 1.5, 1, 0, true)
+		// Saturation
+		else if (_frameCount == 400) _anim.adjustColor(0, 1, 1.5, 0, true)
+		// Lum
+		else if (_frameCount == 500) _anim.adjustColor(0, 1.5, 1, 0, true)
+		// Hue
+		else if (_frameCount == 600) _anim.adjustColor(0, 1, 1, 128, true)
+		// All at once
+		else if (_frameCount == 700) _anim.adjustColor(0.5, 1.5, 1.5, 128, true)
+		// Reset
+		else if (_frameCount == 800) _frameCount = 0;
 		super.update();
 	}
 
