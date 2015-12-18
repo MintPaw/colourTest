@@ -33,7 +33,7 @@ class FlxColourSprite extends FlxSprite
 			c:Float = 1,
 			s:Float = 1,
 			h:Float = 0,
-			resetFirst:Bool = false):Void
+			resetFirst:Bool = true):Void
 	{
 		if (resetFirst) resetPixels();
 
